@@ -2,6 +2,7 @@ require("dotenv").config()
 const express = require("express")
 
 const sequelize = require("./db/connect")
+const User=require("./models/User")
 
 const port = process.env.PORT || 5000
 
