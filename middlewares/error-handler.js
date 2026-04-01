@@ -95,6 +95,13 @@ const errorHandlerMiddleware = (err, req, res, next) => {
         })
     }
 
+    if (err.StatusCodes === StatusCodes.CONFLICT) {
+        return res.status(StatusCodes.CONFLICT).json({
+            success: false,
+            message: err.message || "Duplicate entry"
+        })
+    }
+
     // ✅ Fallback — Internal Server Error
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         success: false,

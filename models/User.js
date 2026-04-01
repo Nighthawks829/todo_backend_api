@@ -3,6 +3,7 @@ const sequelize = require("../db/connect")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const SALT_ROUNDS = 10
+require("dotenv").config()
 
 const UserSchema = sequelize.define(
     "Users",
@@ -124,6 +125,16 @@ const UserSchema = sequelize.define(
 
 UserSchema.prototype.isValidPassword = async function (enteredPasswrod) {
     return await bcrypt.compare(enteredPasswrod, this.password)
+}
+
+UserSchema.prototype.generateJWT = function () {
+    return jwt.sign(
+        { user_id: this.id, name: this.name, email: this.email },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: process.env.JWT_LIFETIME || "7d"
+        }
+    )
 }
 
 // Sync the table and show messages
