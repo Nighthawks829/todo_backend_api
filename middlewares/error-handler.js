@@ -95,7 +95,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
         })
     }
 
-    if (err.StatusCodes === StatusCodes.CONFLICT) {
+    if (err.statusCode === StatusCodes.CONFLICT) {
         return res.status(StatusCodes.CONFLICT).json({
             success: false,
             message: err.message || "Duplicate entry"

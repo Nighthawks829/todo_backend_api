@@ -1,4 +1,4 @@
-const { UserSchema } = require("../models/User")
+const UserSchema = require("../models/User")
 const { StatusCodes } = require("http-status-codes")
 
 const { BadRequestError, NotFoundError, UnauthorizedError, ConflictError } = require("../errors");
@@ -26,7 +26,7 @@ clearOptions = {
 
 
 const login = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password } = req.body || {};
 
     // 1. Check if email and password are provided
     if (!email || !password) {
@@ -49,7 +49,7 @@ const login = async (req, res) => {
     }
 
     // 5. Generate JWT token
-    const token = user.generateToken()
+    const token = user.generateJWTToken()
 
     res.cookie("token", token, cookieOptions)
 
@@ -81,7 +81,7 @@ const logout = async (req, res) => {
 }
 
 const register = async (req, res) => {
-    const { name, email, password, image } = req.body
+    const { name, email, password, image } = req.body || {}
 
     // 1. Check if all requierd fields are provided
     if (!name || !email || !password) {
@@ -103,7 +103,7 @@ const register = async (req, res) => {
     })
 
     // 4. Generate JWT token
-    const token = user.generateToken()
+    const token = user.generateJWTToken()
 
     // 5. Set cookies
     if (user) {

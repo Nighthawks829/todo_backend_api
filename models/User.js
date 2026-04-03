@@ -37,7 +37,7 @@ const UserSchema = sequelize.define(
                 msg: "This email address is already registered",
             },
             set(value) {
-                this.setDataValue("email", value.toLowerCase()).trim()
+                this.setDataValue("email", value.toLowerCase().trim())
             },
             validate: {
                 isEmail: {
@@ -90,7 +90,7 @@ const UserSchema = sequelize.define(
         image: {
             type: DataTypes.STRING,
             allowNull: true,
-            defaultValue: "/img/default-proile.png",
+            defaultValue: "https://img.nighthawks0230.com/img/default-proile.png",
             validate: {
                 isUrl: {
                     msg: "Profile picture must be a valid URL"
@@ -127,7 +127,7 @@ UserSchema.prototype.isValidPassword = async function (enteredPasswrod) {
     return await bcrypt.compare(enteredPasswrod, this.password)
 }
 
-UserSchema.prototype.generateJWT = function () {
+UserSchema.prototype.generateJWTToken = function () {
     return jwt.sign(
         { user_id: this.id, name: this.name, email: this.email },
         process.env.JWT_SECRET,
